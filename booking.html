@@ -20,7 +20,7 @@
             overflow: hidden;
         }
         .container {
-            width: 70%;
+            width: 63%;
             margin: 20px auto;
             padding: 20px 20px 20px 40px;
             background: white;
@@ -28,7 +28,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
-            height: 155.4px; /* 修改为原高度的60% */
+            height: 259px;
             font-size: 1.2em;
             margin-top: 10px;
             cursor: pointer;
@@ -42,6 +42,7 @@
         }
         .icon-warning {
             color: #888;
+            background-color: transparent;
             border: 2px solid #888;
             border-radius: 50%;
             width: 36px;
@@ -102,11 +103,13 @@
         }
         .cancel-label {
             display: inline-block;
+            background-color: transparent;
             color: #9B2A30;
             border: 1px solid #9B2A30;
             border-radius: 8px;
             padding: 8px 15px;
             margin-top: 10px;
+            text-align: center;
             cursor: pointer;
             font-size: 1.1em;
             margin-left: 60px;
@@ -118,13 +121,13 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: 80%;
-            height: 45%;
+            height: 36%;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             z-index: 1000;
             overflow: auto;
-            font-size: 1.15em;
+            font-size: 1.25em;
         }
         .modal-header {
             padding: 15px;
@@ -161,135 +164,148 @@
     </style>
 </head>
 <body>
-
-<div class="container" onclick="showModal()">
-    <div class="header">
-        <div class="icon-warning">
-            <i class="fas fa-exclamation"></i>
+    <div class="container" onclick="showModal()">
+        <div class="header">
+            <div class="icon-warning">
+                <i class="fas fa-exclamation"></i>
+            </div>
+            <h3>深圳校区健身房</h3>
+            <span class="status">已预约</span>
         </div>
-        <h3>深圳校区健身房</h3>
-        <span class="status">已预约</span>
-    </div>
-    <div class="line"></div>
-    <div class="detail info">#RB-ZDYP7RBVAT  运动时 ￥5</div>
-    <div class="detail">
-        <i class="fas fa-calendar-alt icon"></i> <span id="date"></span>
-    </div>
-    <div class="detail">
-        <i class="fas fa-clock icon icon-clock"></i> <span id="time"></span>
-    </div>
-    <div class="detail">
-        <i class="fas fa-map-marker-alt icon"></i> 深圳校区健身房 - 场地1
-    </div>
-    <span class="cancel-label">取消</span>
-</div>
-
-<div class="container" onclick="showModal()">
-    <div class="header">
-        <div class="icon-warning">
-            <i class="fas fa-exclamation"></i>
+        <div class="line"></div>
+        <div class="detail info">#RB-ZDYP7RBVAT  运动时 ￥5</div>
+        <div class="detail">
+            <i class="fas fa-calendar-alt icon"></i> <span id="date"></span>
         </div>
-        <h3>深圳校区健身房</h3>
-        <span class="status">已预约</span>
+        <div class="detail">
+            <i class="fas fa-clock icon icon-clock"></i> <span id="time"></span>
+        </div>
+        <div class="detail">
+            <i class="fas fa-map-marker-alt icon"></i> 深圳校区健身房 - 场地1
+        </div>
+        <span class="cancel-label">取消</span>
     </div>
-    <div class="line"></div>
-    <div class="detail info">#RB-ZDYP7RBVAT  运动时 ￥5</div>
-    <div class="detail">
-        <i class="fas fa-calendar-alt icon"></i> <span id="date2"></span>
+
+    <div class="container" onclick="showModal()">
+        <div class="header">
+            <div class="icon-warning">
+                <i class="fas fa-exclamation"></i>
+            </div>
+            <h3>深圳校区健身房</h3>
+            <span class="status">已预约</span>
+        </div>
+        <div class="line"></div>
+        <div class="detail info">#RB-ZDYP7RBVAT  运动时 ￥5</div>
+        <div class="detail">
+            <i class="fas fa-calendar-alt icon"></i> <span id="date2"></span>
+        </div>
+        <div class="detail">
+            <i class="fas fa-clock icon icon-clock"></i> <span id="time2"></span>
+        </div>
+        <div class="detail">
+            <i class="fas fa-map-marker-alt icon"></i> 深圳校区健身房 - 场地1
+        </div>
+        <div class="participants">参与者：</div>
     </div>
-    <div class="detail">
-        <i class="fas fa-clock icon icon-clock"></i> <span id="time2"></span>
+
+    <div class="overlay" id="overlay" onclick="hideModal()"></div>
+    <div class="modal" id="modal">
+        <div class="modal-header">
+            <h3>我的预约</h3>
+        </div>
+        <div class="modal-body">
+            <div class="detail" id="venue">场馆：深圳校区健身房</div>
+            <div class="detail" id="dateModal">预约日期：</div>
+            <div class="detail" id="timeSlot">预约时段：</div>
+            <div class="detail" id="fieldName">场地名称：深圳校区健身房 - 场地1</div>
+            <div class="detail" id="bookingNumber">预约编号：#RB-ZDYP7RBVAT</div>
+            <div class="detail" id="cost">费用：运动时 ￥5</div>
+        </div>
+        <div class="modal-footer">
+            <button onclick="confirmBooking()">确认</button>
+        </div>
     </div>
-    <div class="detail">
-        <i class="fas fa-map-marker-alt icon"></i> 深圳校区健身房 - 场地1
-    </div>
-    <div class="participants">参与者：</div>
-</div>
 
-<div class="overlay" id="overlay" onclick="hideModal()"></div>
-<div class="modal" id="modal">
-    <div class="modal-header">
-        <h3>我的预约</h3>
-    </div>
-    <div class="modal-body">
-        <div class="detail" id="venue">场馆：深圳校区健身房</div>
-        <div class="detail" id="dateModal">预约日期：</div>
-        <div class="detail" id="timeSlot">预约时段：</div>
-        <div class="detail" id="fieldName">场地名称：深圳校区健身房 - 场地1</div>
-        <div class="detail" id="bookingNumber">预约编号：#RB-ZDYP7RBVAT</div>
-        <div class="detail" id="cost">费用：运动时 ￥5</div>
-    </div>
-    <div class="modal-footer">
-        <button onclick="confirmBooking()">确认</button>
-    </div>
-</div>
+    <script>
+        // 严格保持原始时间计算逻辑
+        const timeRanges = [
+            "00:00-02:00",
+            "02:00-04:00",
+            "04:00-06:00",
+            "06:00-08:00",
+            "08:00-10:00",
+            "10:00-12:00",
+            "12:00-14:00",
+            "14:00-16:00",
+            "16:00-18:00",
+            "18:00-20:00",
+            "20:00-22:00",
+            "22:00-24:00"
+        ];
 
-<script>
-    const timeRanges = [
-        "00:00-02:00",
-        "02:00-04:00",
-        "04:00-06:00",
-        "06:00-08:00",
-        "08:00-10:00",
-        "10:00-12:00",
-        "12:00-14:00",
-        "14:00-16:00",
-        "16:00-18:00",
-        "18:00-20:00",
-        "20:00-22:00",
-        "22:00-24:00"
-    ];
+        // 初始化当前时间
+        const now = new Date();
+        
+        // 第一个预约信息
+        const dateElement = document.getElementById("date");
+        dateElement.textContent = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
 
-    const now = new Date();
+        const timeElement = document.getElementById("time");
+        const currentTotalMinutes = now.getHours() * 60 + now.getMinutes();
 
-    // 第一个容器时间设置
-    const dateElement = document.getElementById("date");
-    dateElement.textContent = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+        // 严格原始匹配逻辑
+        for (const range of timeRanges) {
+            const [start, end] = range.split("-").map(time => {
+                const [hour, minute] = time.split(":").map(Number);
+                return hour * 60 + minute;
+            });
+            
+            if (currentTotalMinutes >= start && currentTotalMinutes < end) {
+                timeElement.textContent = range;
+                break;
+            }
+        }
 
-    const timeElement = document.getElementById("time");
-    const currentTime = now.getHours() * 60 + now.getMinutes();
-    timeElement.textContent = timeRanges.find(range => {
-        const [start, end] = range.split("-").map(t => {
-            const [h, m] = t.split(":").map(Number);
-            return h * 60 + m;
-        });
-        return currentTime >= start && currentTime < end;
-    });
+        // 两天前预约信息
+        const twoDaysAgo = new Date();
+        twoDaysAgo.setDate(now.getDate() - 2);
+        
+        const dateElement2 = document.getElementById("date2");
+        dateElement2.textContent = `${twoDaysAgo.getFullYear()}-${String(twoDaysAgo.getMonth()+1).padStart(2,'0')}-${String(twoDaysAgo.getDate()).padStart(2,'0')}`;
 
-    // 第二个容器时间设置（两天前）
-    const dateElement2 = document.getElementById("date2");
-    const twoDaysAgo = new Date(now);
-    twoDaysAgo.setDate(now.getDate() - 2);
-    dateElement2.textContent = `${twoDaysAgo.getFullYear()}-${String(twoDaysAgo.getMonth()+1).padStart(2,'0')}-${String(twoDaysAgo.getDate()).padStart(2,'0')}`;
+        const timeElement2 = document.getElementById("time2");
+        const pastTotalMinutes = twoDaysAgo.getHours() * 60 + twoDaysAgo.getMinutes();
 
-    const timeElement2 = document.getElementById("time2");
-    const pastTime = twoDaysAgo.getHours() * 60 + twoDaysAgo.getMinutes();
-    timeElement2.textContent = timeRanges.find(range => {
-        const [start, end] = range.split("-").map(t => {
-            const [h, m] = t.split(":").map(Number);
-            return h * 60 + m;
-        });
-        return pastTime >= start && pastTime < end;
-    });
+        // 相同的匹配逻辑
+        for (const range of timeRanges) {
+            const [start, end] = range.split("-").map(time => {
+                const [hour, minute] = time.split(":").map(Number);
+                return hour * 60 + minute;
+            });
+            
+            if (pastTotalMinutes >= start && pastTotalMinutes < end) {
+                timeElement2.textContent = range;
+                break;
+            }
+        }
 
-    // 弹窗功能
-    function showModal() {
-        document.getElementById('overlay').style.display = 'block';
-        document.getElementById('modal').style.display = 'block';
-        document.getElementById('dateModal').textContent = `预约日期：${dateElement.textContent}`;
-        document.getElementById('timeSlot').textContent = `预约时段：${timeElement.textContent}`;
-    }
+        // 弹窗控制（直接使用已计算好的时间段）
+        function showModal() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('modal').style.display = 'block';
+            document.getElementById('dateModal').textContent = `预约日期：${dateElement.textContent}`;
+            document.getElementById('timeSlot').textContent = `预约时段：${timeElement.textContent}`;
+        }
 
-    function hideModal() {
-        document.getElementById('overlay').style.display = 'none';
-        document.getElementById('modal').style.display = 'none';
-    }
+        function hideModal() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('modal').style.display = 'none';
+        }
 
-    function confirmBooking() {
-        alert("预约确认成功！");
-        hideModal();
-    }
-</script>
-
+        function confirmBooking() {
+            alert("预约确认成功！");
+            hideModal();
+        }
+    </script>
 </body>
 </html>
