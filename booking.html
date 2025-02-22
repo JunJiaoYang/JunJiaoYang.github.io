@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预约信息</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* 使页面高度充满视口 */
+            background-image: url('beij.jpg'); /* 背景图片链接 */
+            background-size: cover; /* 背景图覆盖整个页面 */
+            background-position: center; /* 背景图居中 */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* 使内容接近底部 */
+            overflow: hidden; /* 防止弹窗出现时出现滚动条 */
+        }
+        .container {
+            width: 70%; /* 设置宽度为页面宽度的70% */
+            margin: 20px auto; /* 上下间距20px，左右居中 */
+            padding: 20px 20px 20px 40px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            height: 259px; /* 设置高度为259px */
+            font-size: 1.2em; /* 放大整体字体 */
+            margin-top: 10px; /* 向下移动10个单位 */
+            cursor: pointer; /* 鼠标悬停时显示为可点击状态 */
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* 使内容分散对齐 */
+            position: relative;
+            margin-left: 60px; /* 向右移动60个单位 */
+        }
+        .icon-warning {
+            color: #888;
+            background-color: transparent;
+            border: 2px solid #888;
+            border-radius: 50%;
+            width: 36px; /* 增大图标容器宽度 */
+            height: 36px; /* 增大图标容器高度 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            position: absolute;
+            left: -50px; /* 向左移动20个单位，原本为-30px */
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .icon-warning i {
+            font-size: 20px; /* 增大图标字体大小 */
+        }
+        .header h3 {
+            margin: 0; /* 去掉标题的默认外边距 */
+        }
+        .status {
+            color: #4CAF50;
+            border: 1px solid #4CAF50;
+            border-radius: 50px;
+            padding: 8px 15px; /* 增大状态标签的内边距 */
+            font-weight: normal;
+            font-size: 1.1em; /* 放大状态标签字体 */
+            margin-left: 10px; /* 向右移动10个单位 */
+        }
+        .line {
+            border-top: 1px solid #ccc;
+            margin: 5px 0;
+            margin-left: 60px; /* 使线条的左边距与感叹号的左边距对齐 */
+            width: calc(100% - 60px); /* 使线条宽度适合容器 */
+        }
+        .detail {
+            margin: 10px 0;
+            color: #888;
+            font-size: 1em; /* 保持具体信息的字体大小 */
+            margin-left: 60px; /* 向右移动60个单位（原有40个单位 + 新增20个单位） */
+        }
+        .detail.info {
+            color: #d4bc2a;
+            font-size: 1.1em; /* 放大信息字体 */
+        }
+        .participants {
+            margin-top: 10px; /* 增加顶部间距 */
+            margin-left: 60px; /* 向右移动60个单位 */
+        }
+        .icon {
+            color: #555;
+            margin-right: 5px;
+            font-size: 1.3em; /* 放大图标字体 */
+        }
+        .icon-clock {
+            background-color: transparent;
+            border-radius: 50%;
+            padding: 0;
+        }
+        .cancel-label {
+            display: inline-block;
+            background-color: transparent;
+            color: #9B2A30;
+            border: 1px solid #9B2A30;
+            border-radius: 8px;
+            padding: 8px 15px; /* 增大取消标签的内边距 */
+            margin-top: 10px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.1em; /* 放大取消标签字体 */
+            margin-left: 60px; /* 向右移动60个单位 */
+        }
+        /* 弹窗样式 */
+        .modal {
+            display: none; /* 默认隐藏 */
+            position: fixed; /* 绝对定位 */
+            top: 50%; /* 距离顶部50% */
+            left: 50%; /* 距离左侧50% */
+            transform: translate(-50%, -50%); /* 移动到中心 */
+            width: 80%; /* 宽度为页面的80% */
+            height: 45%; /* 高度为页面的45% */
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            z-index: 1000; /* 确保弹窗在最上层 */
+            overflow: auto; /* 内容溢出时显示滚动条 */
+            font-size: 1.15em; /* 增大弹窗字体（稍微增大） */
+        }
+        .modal-header {
+            padding: 15px;
+            border-bottom: 1px solid #ccc;
+        }
+        .modal-body {
+            padding: 15px;
+        }
+        .modal-footer {
+            padding: 15px;
+            text-align: right;
+        }
+        button {
+            background-color: #005e3b;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #004b2e;
+        }
+        .overlay {
+            display: none; /* 默认隐藏 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999; /* 确保覆盖内容 */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" onclick="showModal()">
+    <div class="header">
+        <div class="icon-warning">
+            <i class="fas fa-exclamation"></i>
+        </div>
+        <h3>深圳校区健身房</h3>
+        <span class="status">已预约</span>
+    </div>
+    <div class="line"></div>
+    <div class="detail info">#RB-ZDYP7RBVAT  运动时 ￥5</div>
+    <div class="detail">
+        <i class="fas fa-calendar-alt icon"></i> <span id="date"></span>
+    </div>
+    <div class="detail">
+        <i class="fas fa-clock icon icon-clock"></i> <span id="time"></span>
+    </div>
+    <div class="detail">
+        <i class="fas fa-map-marker-alt icon"></i> 深圳校区健身房 - 场地1
+    </div>
+    <span class="cancel-label">取消</span> <!-- 保留取消标识 -->
+</div>
+
+<!-- 新增的预约信息 -->
+<div class="container" onclick="showModal()">
+    <div class="header">
+        <div class="icon-warning">
+            <i class="fas fa-exclamation"></i>
+        </div>
+        <h3>深圳校区健身房</h3>
+        <span class="status">已预约</span>
+    </div>
+    <div class="line"></div>
+    <div class="detail info">#RB-ZDYP7RBVAT  运动时 ￥5</div>
+    <div class="detail">
+        <i class="fas fa-calendar-alt icon"></i> <span id="date2"></span>
+    </div>
+    <div class="detail">
+        <i class="fas fa-clock icon icon-clock"></i> <span id="time2"></span>
+    </div>
+    <div class="detail">
+        <i class="fas fa-map-marker-alt icon"></i> 深圳校区健身房 - 场地1
+    </div>
+    <div class="participants">参与者：</div> <!-- 仅显示“参与者：” -->
+</div>
+
+<!-- 弹窗 -->
+<div class="overlay" id="overlay" onclick="hideModal()"></div>
+<div class="modal" id="modal">
+    <div class="modal-header">
+        <h3>我的预约</h3>
+    </div>
+    <div class="modal-body">
+        <div class="detail" id="venue">场馆：深圳校区健身房</div>
+        <div class="detail" id="dateModal">预约日期：</div>
+        <div class="detail" id="timeSlot">预约时段：</div>
+        <div class="detail" id="fieldName">场地名称：深圳校区健身房 - 场地1</div>
+        <div class="detail" id="bookingNumber">预约编号：#RB-ZDYP7RBVAT</div>
+        <div class="detail" id="cost">费用：运动时 ￥5</div>
+    </div>
+    <div class="modal-footer">
+        <button onclick="confirmBooking()">确认</button>
+    </div>
+</div>
+
+<script>
+    const timeRanges = [
+        "00:00-02:00",
+        "02:00-04:00",
+        "04:00-06:00",
+        "06:00-08:00",
+        "08:00-10:00",
+        "10:00-12:00",
+        "12:00-14:00",
+        "14:00-16:00",
+        "16:00-18:00",
+        "18:00-20:00",
+        "20:00-22:00",
+        "22:00-24:00"
+    ];
+
+    const now = new Date();
+
+    const dateElement = document.getElementById("date");
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    dateElement.textContent = `${year}-${month}-${day}`;
+
+    const timeElement = document.getElementById("time");
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+
+    for (const range of timeRanges) {
+        const [start, end] = range.split("-").map(time => {
+            const [hour, minute] = time.split(":").map(Number);
+            return hour * 60 + minute;
+        });
+        const currentTimeInMinutes = currentHour * 60 + currentMinute;
+
+        if (currentTimeInMinutes >= start && currentTimeInMinutes < end) {
+            timeElement.textContent = range;
+            break;
+        }
+    }
+
+    // 处理第二个预约信息的日期和时间
+    const dateElement2 = document.getElementById("date2");
+    const timeElement2 = document.getElementById("time2");
+
+    const twoDaysAgo = new Date();
+    twoDaysAgo.setDate(now.getDate() - 2);
+
+    const year2 = twoDaysAgo.getFullYear();
+    const month2 = String(twoDaysAgo.getMonth() + 1).padStart(2, "0");
+    const day2 = String(twoDaysAgo.getDate()).padStart(2, "0");
+    dateElement2.textContent = `${year2}-${month2}-${day2}`;
+
+    const currentHour2 = twoDaysAgo.getHours();
+    const currentMinute2 = twoDaysAgo.getMinutes();
+
+    for (const range of timeRanges) {
+        const [start, end] = range.split("-").map(time => {
+            const [hour, minute] = time.split(":").map(Number);
+            return hour * 60 + minute;
+        });
+        const currentTimeInMinutes2 = currentHour2 * 60 + currentMinute2;
+
+        if (currentTimeInMinutes2 >= start && currentTimeInMinutes2 < end) {
+            timeElement2.textContent = range;
+            break;
+        }
+    }
+
+    // 弹窗相关函数
+    function showModal() {
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('modal').style.display = 'block';
+        // 更新弹窗日期和时段
+        updateBookingDetails();
+    }
+
+    function hideModal() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('modal').style.display = 'none';
+    }
+
+    function getCurrentTimeSlot() {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const currentTimeInMinutes = hours * 60 + minutes;
+
+        for (const range of timeRanges) {
+            const [start, end] = range.split("-").map(time => {
+                const [hour, minute] = time.split(":").map(Number);
+                return hour * 60 + minute;
+            });
+
+            // 检查当前时间是否在某个时间段内
+            if (currentTimeInMinutes >= start && currentTimeInMinutes < end) {
+                return range; // 返回对应的时间段
+            }
+        }
+
+        return ""; // 如果没有匹配到时段，则返回空字符串
+    }
+
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从0开始，需加1
+        const day = String(date.getDate()).padStart(2, '0'); // 日期前补零
+        return `${year}-${month}-${day}`;
+    }
+
+    function updateBookingDetails() {
+        const now = new Date();
+        // 更新日期
+        const dateString = formatDate(now); // 获取当前日期
+        document.getElementById('dateModal').innerText = "预约日期：" + dateString;
+
+        // 更新时段
+        const timeSlot = getCurrentTimeSlot();
+        document.getElementById('timeSlot').innerText = "预约时段：" + timeSlot;
+    }
+
+    function confirmBooking() {
+        alert("预约确认成功！");
+        hideModal(); // 关闭弹窗
+    }
+</script>
+
+</body>
+</html>
