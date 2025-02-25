@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>预约信息</title>
+    <title>中山大学体育场馆预约系统</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -14,105 +14,95 @@
             background-image: url('beij.jpg');
             background-size: cover;
             background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
+            position: relative;
             overflow: hidden;
         }
+        .wrapper {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-bottom: 20px;
+            box-sizing: border-box;
+        }
         .container {
-            width: 63%;
-            margin: 20px auto;
-            padding: 20px 20px 20px 40px;
+            width: 100%;
+            padding: 12px 15px 12px 35px;
             background: white;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-            height: 259px;
-            font-size: 1.2em;
-            margin-top: 10px;
+            font-size: 0.72em;
             cursor: pointer;
+            flex: 1;
+            box-sizing: border-box;
         }
         .header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             position: relative;
-            margin-left: 60px;
+            margin-left: 45px;
         }
         .icon-warning {
             color: #888;
-            background-color: transparent;
-            border: 2px solid #888;
+            border: 1.2px solid #888;
             border-radius: 50%;
-            width: 36px;
-            height: 36px;
+            width: 21.6px;
+            height: 21.6px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-right: 15px;
             position: absolute;
-            left: -50px;
+            left: -35px;
             top: 50%;
             transform: translateY(-50%);
         }
         .icon-warning i {
-            font-size: 20px;
-        }
-        .header h3 {
-            margin: 0;
+            font-size: 12px;
         }
         .status {
             color: #4CAF50;
             border: 1px solid #4CAF50;
-            border-radius: 50px;
-            padding: 8px 15px;
-            font-weight: normal;
-            font-size: 1.1em;
-            margin-left: 10px;
+            border-radius: 30px;
+            padding: 4px 8px;
+            font-size: 0.66em;
         }
         .line {
             border-top: 1px solid #ccc;
-            margin: 5px 0;
-            margin-left: 60px;
-            width: calc(100% - 60px);
+            margin: 4px 0 4px 45px;
+            width: calc(100% - 45px);
         }
         .detail {
-            margin: 10px 0;
+            margin: 5px 0;
             color: #888;
             font-size: 1em;
-            margin-left: 60px;
+            margin-left: 45px;
         }
         .detail.info {
             color: #d4bc2a;
-            font-size: 1.1em;
+            font-size: 0.66em;
         }
         .participants {
-            margin-top: 10px;
-            margin-left: 60px;
+            margin: 5px 0 0 45px;
         }
         .icon {
             color: #555;
-            margin-right: 5px;
-            font-size: 1.3em;
-        }
-        .icon-clock {
-            background-color: transparent;
-            border-radius: 50%;
-            padding: 0;
+            margin-right: 3px;
+            font-size: 0.78em;
         }
         .cancel-label {
             display: inline-block;
-            background-color: transparent;
             color: #9B2A30;
             border: 1px solid #9B2A30;
-            border-radius: 8px;
-            padding: 8px 15px;
-            margin-top: 10px;
-            text-align: center;
-            cursor: pointer;
-            font-size: 1.1em;
-            margin-left: 60px;
+            border-radius: 6px;
+            padding: 4px 8px;
+            margin: 5px 0 0 45px;
+            font-size: 0.66em;
         }
         .modal {
             display: none;
@@ -126,8 +116,7 @@
             border-radius: 8px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             z-index: 1000;
-            overflow: auto;
-            font-size: 1.25em;
+            font-size: 0.75em;
         }
         .modal-header {
             padding: 15px;
@@ -144,12 +133,10 @@
             background-color: #005e3b;
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 8px 12px;
             cursor: pointer;
             border-radius: 5px;
-        }
-        button:hover {
-            background-color: #004b2e;
+            font-size: 0.9em;
         }
         .overlay {
             display: none;
@@ -164,48 +151,50 @@
     </style>
 </head>
 <body>
-    <div class="container" onclick="showModal()">
-        <div class="header">
-            <div class="icon-warning">
-                <i class="fas fa-exclamation"></i>
+    <div class="wrapper">
+        <div class="container" onclick="showModal()">
+            <div class="header">
+                <div class="icon-warning">
+                    <i class="fas fa-exclamation"></i>
+                </div>
+                <h3>深圳校区健身房</h3>
+                <span class="status">已预约</span>
             </div>
-            <h3>深圳校区健身房</h3>
-            <span class="status">已预约</span>
+            <div class="line"></div>
+            <div class="detail info">#RB-ZDYP7RBVAT  运动时 ￥5</div>
+            <div class="detail">
+                <i class="fas fa-calendar-alt icon"></i> <span id="date"></span>
+            </div>
+            <div class="detail">
+                <i class="fas fa-clock icon"></i> <span id="time"></span>
+            </div>
+            <div class="detail">
+                <i class="fas fa-map-marker-alt icon"></i> 深圳校区健身房 - 场地1
+            </div>
+            <span class="cancel-label">取消</span>
         </div>
-        <div class="line"></div>
-        <div class="detail info">#RB-ZDYP7RBVAT  运动时 ￥5</div>
-        <div class="detail">
-            <i class="fas fa-calendar-alt icon"></i> <span id="date"></span>
-        </div>
-        <div class="detail">
-            <i class="fas fa-clock icon icon-clock"></i> <span id="time"></span>
-        </div>
-        <div class="detail">
-            <i class="fas fa-map-marker-alt icon"></i> 深圳校区健身房 - 场地1
-        </div>
-        <span class="cancel-label">取消</span>
-    </div>
 
-    <div class="container" onclick="showModal()">
-        <div class="header">
-            <div class="icon-warning">
-                <i class="fas fa-exclamation"></i>
+        <div class="container" onclick="showModal()">
+            <div class="header">
+                <div class="icon-warning">
+                    <i class="fas fa-exclamation"></i>
+                </div>
+                <h3>深圳校区健身房</h3>
+                <span class="status">已预约</span>
             </div>
-            <h3>深圳校区健身房</h3>
-            <span class="status">已预约</span>
+            <div class="line"></div>
+            <div class="detail info">#RB-ZDYP7RBVAT  运动时 ￥5</div>
+            <div class="detail">
+                <i class="fas fa-calendar-alt icon"></i> <span id="date2"></span>
+            </div>
+            <div class="detail">
+                <i class="fas fa-clock icon"></i> <span id="time2"></span>
+            </div>
+            <div class="detail">
+                <i class="fas fa-map-marker-alt icon"></i> 深圳校区健身房 - 场地1
+            </div>
+            <div class="participants">参与者：</div>
         </div>
-        <div class="line"></div>
-        <div class="detail info">#RB-ZDYP7RBVAT  运动时 ￥5</div>
-        <div class="detail">
-            <i class="fas fa-calendar-alt icon"></i> <span id="date2"></span>
-        </div>
-        <div class="detail">
-            <i class="fas fa-clock icon icon-clock"></i> <span id="time2"></span>
-        </div>
-        <div class="detail">
-            <i class="fas fa-map-marker-alt icon"></i> 深圳校区健身房 - 场地1
-        </div>
-        <div class="participants">参与者：</div>
     </div>
 
     <div class="overlay" id="overlay" onclick="hideModal()"></div>
@@ -227,7 +216,6 @@
     </div>
 
     <script>
-        // 严格保持原始时间计算逻辑
         const timeRanges = [
             "00:00-02:00",
             "02:00-04:00",
@@ -243,53 +231,44 @@
             "22:00-24:00"
         ];
 
-        // 初始化当前时间
         const now = new Date();
         
-        // 第一个预约信息
+        // 当前预约
         const dateElement = document.getElementById("date");
         dateElement.textContent = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
 
         const timeElement = document.getElementById("time");
         const currentTotalMinutes = now.getHours() * 60 + now.getMinutes();
-
-        // 严格原始匹配逻辑
         for (const range of timeRanges) {
             const [start, end] = range.split("-").map(time => {
                 const [hour, minute] = time.split(":").map(Number);
                 return hour * 60 + minute;
             });
-            
             if (currentTotalMinutes >= start && currentTotalMinutes < end) {
                 timeElement.textContent = range;
                 break;
             }
         }
 
-        // 两天前预约信息
+        // 两天前预约
         const twoDaysAgo = new Date();
         twoDaysAgo.setDate(now.getDate() - 2);
-        
         const dateElement2 = document.getElementById("date2");
         dateElement2.textContent = `${twoDaysAgo.getFullYear()}-${String(twoDaysAgo.getMonth()+1).padStart(2,'0')}-${String(twoDaysAgo.getDate()).padStart(2,'0')}`;
 
         const timeElement2 = document.getElementById("time2");
         const pastTotalMinutes = twoDaysAgo.getHours() * 60 + twoDaysAgo.getMinutes();
-
-        // 相同的匹配逻辑
         for (const range of timeRanges) {
             const [start, end] = range.split("-").map(time => {
                 const [hour, minute] = time.split(":").map(Number);
                 return hour * 60 + minute;
             });
-            
             if (pastTotalMinutes >= start && pastTotalMinutes < end) {
                 timeElement2.textContent = range;
                 break;
             }
         }
 
-        // 弹窗控制（直接使用已计算好的时间段）
         function showModal() {
             document.getElementById('overlay').style.display = 'block';
             document.getElementById('modal').style.display = 'block';
