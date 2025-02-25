@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中山大学体育场馆预约系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-image: url('beij.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .wrapper {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 50vh;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-bottom: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            width: 100%;
+            padding: 12px 15px 12px 35px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 0.72em;
+            cursor: pointer;
+            flex: 1;
+            box-sizing: border-box;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            margin-left: 45px;
+        }
+        .icon-warning {
+            color: #888;
+            border: 1.2px solid #888;
+            border-radius: 50%;
+            width: 21.6px;
+            height: 21.6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            left: -35px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .icon-warning i {
+            font-size: 12px;
+        }
+        .status {
+            color: #4CAF50;
+            border: 1px solid #4CAF50;
+            border-radius: 30px;
+            padding: 4px 8px;
+            font-size: 0.66em;
+        }
+        .line {
+            border-top: 1px solid #ccc;
+            margin: 4px 0 4px 45px;
+            width: calc(100% - 45px);
+        }
+        .detail {
+            margin: 5px 0;
+            color: #888;
+            font-size: 1em;
+            margin-left: 45px;
+        }
+        .detail.info {
+            color: #d4bc2a;
+            font-size: 0.66em;
+        }
+        .participants {
+            margin: 5px 0 0 45px;
+        }
+        .icon {
+            color: #555;
+            margin-right: 3px;
+            font-size: 0.78em;
+        }
+        .cancel-label {
+            display: inline-block;
+            color: #9B2A30;
+            border: 1px solid #9B2A30;
+            border-radius: 6px;
+            padding: 4px 8px;
+            margin: 5px 0 0 45px;
+            font-size: 0.66em;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 36%;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            font-size: 0.75em;
+        }
+        .modal-header {
+            padding: 15px;
+        }
+        .modal-body {
+            padding: 15px;
+        }
+        .modal-footer {
+            padding: 15px;
+            text-align: right;
+        }
+        button {
+            background-color: #005e3b;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1.08em; /* 按钮大小调整为原来的1.2倍 */
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        /* 修改弹窗文字大小和对齐 */
+        .modal-header h3 {
+            font-size: 2em; /* 将“我的预约”变为原来的两倍大小 */
+            text-align: left; /* 左对齐 */
+            margin: 0; /* 去掉默认的margin */
+        }
+        .modal-body .detail {
+            font-size: 0.9em; /* 将其他文字放大为原来的1.2倍 */
+            text-align: left; /* 左对齐 */
+            margin-left: 0; /* 移除左边距，确保左对齐 */
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container" onclick="showModal()">
+            <div class="header">
+                <div class="icon-warning">
+                    <i class="fas fa-exclamation"></i>
+                </div>
+                <h3>深圳校区健身房</h3>
+                <span class="status">已预约</span>
+            </div>
+            <div class="line"></div>
+            <div class="detail info">#RB-ZDYP7RBVAT  运动时 ￥5</div>
+            <div class="detail">
+                <i class="fas fa-calendar-alt icon"></i> <span id="date"></span>
+            </div>
+            <div class="detail">
+                <i class="fas fa-clock icon"></i> <span id="time"></span>
+            </div>
+            <div class="detail">
+                <i class="fas fa-map-marker-alt icon"></i> 深圳校区健身房 - 场地1
+            </div>
+            <span class="cancel-label">取消</span>
+        </div>
+
+        <div class="container" onclick="showModal()">
+            <div class="header">
+                <div class="icon-warning">
+                    <i class="fas fa-exclamation"></i>
+                </div>
+                <h3>深圳校区健身房</h3>
+                <span class="status">已预约</span>
+            </div>
+            <div class="line"></div>
+            <div class="detail info">#RB-ZDYP7RBVAT  运动时 ￥5</div>
+            <div class="detail">
+                <i class="fas fa-calendar-alt icon"></i> <span id="date2"></span>
+            </div>
+            <div class="detail">
+                <i class="fas fa-clock icon"></i> <span id="time2"></span>
+            </div>
+            <div class="detail">
+                <i class="fas fa-map-marker-alt icon"></i> 深圳校区健身房 - 场地1
+            </div>
+            <div class="participants">参与者：</div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="hideModal()"></div>
+    <div class="modal" id="modal">
+        <div class="modal-header">
+            <h3>我的预约</h3>
+        </div>
+        <div class="modal-body">
+            <div class="detail" id="venue">场馆：深圳校区健身房</div>
+            <div class="detail" id="dateModal">预约日期：</div>
+            <div class="detail" id="timeSlot">预约时段：</div>
+            <div class="detail" id="fieldName">场地名称：深圳校区健身房 - 场地1</div>
+            <div class="detail" id="bookingNumber">预约编号：#RB-ZDYP7RBVAT</div>
+            <div class="detail" id="cost">费用：运动时 ￥5</div>
+        </div>
+        <div class="modal-footer">
+            <button onclick="confirmBooking()">确认</button>
+        </div>
+    </div>
+
+    <script>
+        const timeRanges = [
+            "00:00-02:00",
+            "02:00-04:00",
+            "04:00-06:00",
+            "06:00-08:00",
+            "08:00-10:00",
+            "10:00-12:00",
+            "12:00-14:00",
+            "14:00-16:00",
+            "16:00-18:00",
+            "18:00-20:00",
+            "20:00-22:00",
+            "22:00-24:00"
+        ];
+
+        const now = new Date();
+        
+        // 当前预约
+        const dateElement = document.getElementById("date");
+        dateElement.textContent = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+
+        const timeElement = document.getElementById("time");
+        const currentTotalMinutes = now.getHours() * 60 + now.getMinutes();
+        for (const range of timeRanges) {
+            const [start, end] = range.split("-").map(time => {
+                const [hour, minute] = time.split(":").map(Number);
+                return hour * 60 + minute;
+            });
+            if (currentTotalMinutes >= start && currentTotalMinutes < end) {
+                timeElement.textContent = range;
+                break;
+            }
+        }
+
+        // 两天前预约
+        const twoDaysAgo = new Date();
+        twoDaysAgo.setDate(now.getDate() - 2);
+        const dateElement2 = document.getElementById("date2");
+        dateElement2.textContent = `${twoDaysAgo.getFullYear()}-${String(twoDaysAgo.getMonth()+1).padStart(2,'0')}-${String(twoDaysAgo.getDate()).padStart(2,'0')}`;
+
+        const timeElement2 = document.getElementById("time2");
+        const pastTotalMinutes = twoDaysAgo.getHours() * 60 + twoDaysAgo.getMinutes();
+        for (const range of timeRanges) {
+            const [start, end] = range.split("-").map(time => {
+                const [hour, minute] = time.split(":").map(Number);
+                return hour * 60 + minute;
+            });
+            if (pastTotalMinutes >= start && pastTotalMinutes < end) {
+                timeElement2.textContent = range;
+                break;
+            }
+        }
+
+        function showModal() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('modal').style.display = 'block';
+            document.getElementById('dateModal').textContent = `预约日期：${dateElement.textContent}`;
+            document.getElementById('timeSlot').textContent = `预约时段：${timeElement.textContent}`;
+        }
+
+        function hideModal() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function confirmBooking() {
+            alert("预约确认成功！");
+            hideModal();
+        }
+    </script>
+</body>
+</html>
